@@ -1,10 +1,11 @@
-const express = require('express');
-const app = express();
+const express = require('express')
+const app = express()
 const models = require('./models/post')
 const bodyParser = require('body-parser')
-const promBundle = require("express-prom-bundle");
-const config = require('./system-life');
+const promBundle = require("express-prom-bundle")
+const config = require('./system-life')
 const middlewares = require('./middleware')
+const os = require('os')
 
 const metricsMiddleware = promBundle({
     includeMethod: true, 
@@ -27,6 +28,7 @@ app.set('view engine', 'ejs');
 
 
 app.get('/post', (req, res) => {
+
     res.render('edit-news');
 });
 
@@ -44,9 +46,9 @@ app.get('/post/:id', async (req, res) => {
 
 
 app.get('/', async (req, res) => {
-
+    
     const posts = await models.Post.findAll();
-    res.render('index',{posts: posts});
+    res.render('index',{posts: posts, os: os});
 });
 
 models.initDatabase();
