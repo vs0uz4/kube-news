@@ -13,8 +13,6 @@ const seque = new sequelize.Sequelize(DB_DATABASE, DB_USERNAME, DB_PASSWORD, {
 class Post extends sequelize.Model {
   
   save() {
-    
-    console.log('Entrou')
     super.save();
   }
 }
@@ -33,7 +31,7 @@ Post.init({
     require: true
   },
   content: {
-    type: sequelize.DataTypes.STRING,
+    type: sequelize.DataTypes.TEXT,
     require: true
   },
 }, {
