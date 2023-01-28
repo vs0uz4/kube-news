@@ -5,7 +5,7 @@ pipeline {
         stage ('Build Docker Image') {
             steps {
                 script {
-                    dockerapp = docker.build("vs0uz4/kube-news:${env.BUILD_ID}", '-f ./src/Dockerfile ./src')
+                    dockerapp = docker.build("vs0uz4/kube-news:v${env.BUILD_ID}", '-f ./src/Dockerfile ./src')
                 }
             }
         }
@@ -15,7 +15,7 @@ pipeline {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
                         dockerapp.push('latest')
-                        dockerapp.push("${env.BUILD_ID}")
+                        dockerapp.push("v${env.BUILD_ID}")
                     }
                 }
             }
@@ -23,7 +23,7 @@ pipeline {
 
         stage ('Deploy in Kubernetes') {
             steps {
-                withKubeconfig([credentialsId: 'kubeconfig']) {
+                withKubeConfig([credentialsId: 'kubeconfig']) {
                     sh 'kubectl apply -f ./k8s/deployment.yaml'
                 }
             }
