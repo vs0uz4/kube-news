@@ -15,8 +15,16 @@ pipeline {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
                         dockerapp.push('latest')
-                        dockerapp.psuh("${env.BUILD_ID}")
+                        dockerapp.push("${env.BUILD_ID}")
                     }
+                }
+            }
+        }
+
+        stage ('Deploy in Kubernetes') {
+            steps {
+                withKubeconfig([credentialsId: 'kubeconfig']) {
+                    sh 'kubectl apply -f ./k8s/deployment.yaml'
                 }
             }
         }
