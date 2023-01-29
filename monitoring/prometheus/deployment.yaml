@@ -656,7 +656,7 @@ spec:
     app: prometheus
     release: prometheus
   sessionAffinity: None
-  type: "LoadBalancer"
+  type: "ClusterIP"
 ---
 apiVersion: apps/v1
 kind: DaemonSet
